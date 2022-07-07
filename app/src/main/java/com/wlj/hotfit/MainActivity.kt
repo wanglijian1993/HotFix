@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-        fixBug()
         binding.fab.setOnClickListener { view ->
            startActivity(Intent(this,TestAcitivty::class.java))
         }
@@ -45,18 +44,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun  fixBug(){
-        try {
-            val fixFile= File(Environment.getExternalStorageDirectory(),"fix.dex")
-            if(fixFile.exists()){
-                FixDexManager(this).fixDex(fixFile.absolutePath)
-            }
-            Toast.makeText(this,"修复成功",Toast.LENGTH_SHORT)
-        }catch (e:Exception){
-            Toast.makeText(this,"修复失败",Toast.LENGTH_SHORT)
-        }
 
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will

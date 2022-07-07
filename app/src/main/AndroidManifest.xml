@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HotFit"
+        android:name=".MyApplication"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
