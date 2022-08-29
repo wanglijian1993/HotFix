@@ -1,15 +1,11 @@
-package com.wlj.fixlibrary
+package com.wlj.fixlibrary.dex_fix
 
 import android.content.Context
-import android.os.FileUtils
-import android.util.Log
 import com.wlj.fixlibrary.utils.FileUtil
 import dalvik.system.BaseDexClassLoader
-import dalvik.system.PathClassLoader
 import java.io.*
 import java.lang.Exception
 import java.lang.reflect.Array
-import java.nio.channels.FileChannel
 
 class FixDexManager(context:Context) {
 

@@ -3,7 +3,7 @@ package com.wlj.hotfit
 import android.app.Application
 import android.os.Environment
 import android.widget.Toast
-import com.wlj.fixlibrary.FixDexManager
+import com.wlj.fixlibrary.dex_fix.FixDexManager
 import java.io.File
 import java.lang.Exception
 
