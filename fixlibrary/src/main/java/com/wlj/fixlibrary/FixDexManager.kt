@@ -3,6 +3,7 @@ package com.wlj.fixlibrary
 import android.content.Context
 import android.os.FileUtils
 import android.util.Log
+import com.wlj.fixlibrary.utils.FileUtil
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.PathClassLoader
 import java.io.*
@@ -42,7 +43,7 @@ class FixDexManager(context:Context) {
             println("path${fixDexPath} has be laoded")
             return
         }
-         copyFile(srcFIle,destFile)
+         FileUtil.copyFile(srcFIle,destFile)
 
         //2.2 ClassLoader读取dex路径 为什么加入到集合， 启动可能就要修复
           val fixdexFiles:MutableList<File> = ArrayList()
@@ -105,30 +106,6 @@ class FixDexManager(context:Context) {
         }
 
 
-     fun copyFile(src:File,dest:File) {
-        var inChannel: FileChannel? =null
-        var outChannel:FileChannel?=null
-        try {
-            if(!dest.exists()){
-                dest.createNewFile()
-            }
-            inChannel=FileInputStream(src).channel
-            outChannel=FileOutputStream(dest).channel
-            inChannel.transferTo(0,inChannel.size(),outChannel)
-        }catch (e:IOException){
-            Log.e("wlj","---io异常:${e}")
-        }
-        finally {
-            if(inChannel!=null){
-                inChannel.close()
-            }
-            if(outChannel!=null){
-                outChannel.close()
-            }
-        }
-
-
-    }
     /**
      * 从classloader中获取element
      */

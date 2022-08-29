@@ -5,6 +5,21 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
 }
 
+
+//对子模块进行配置
+subprojects { sub ->
+    sub.beforeEvaluate { project ->
+        println "${project.name}子项目beforeEvaluate回调..."
+    }
+}
+println "根项目配置开始---"
+task rootTest {
+    println "根项目里任务配置---"
+    doLast {
+        println "执行根项目任务..."
+    }
+}
+println "根项目配置结束---"
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

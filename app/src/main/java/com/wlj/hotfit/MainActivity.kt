@@ -1,25 +1,19 @@
 package com.wlj.hotfit
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
-import com.google.android.material.snackbar.Snackbar
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
-import com.wlj.fixlibrary.FixDexManager
+import com.wlj.fixlibrary.so_fix.SoHotFix
+import com.wlj.fixlibrary.utils.FileUtil
 import com.wlj.hotfit.databinding.ActivityMainBinding
 import java.io.File
-import java.lang.Exception
+import java.io.IOException
+
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,37 +22,42 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        binding.bnFixDex.setOnClickListener {
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.fab.setOnClickListener { view ->
-           startActivity(Intent(this,TestAcitivty::class.java))
+        }
+
+        binding.bnFixSo.setOnClickListener {
+            soFix();
+        }
+
+    }
+    fun soFix() {
+        // 从服务器下载 so ，比对 so 的版本
+        // 现在下好了，在我的手机里面 /so/libmain.so
+        // 先调用 sdk 方法动态加载或者修复
+        val mainSoPath = File(Environment.getExternalStorageDirectory(), "so/libmain.so")
+        val libSoPath = File(getDir("lib", Context.MODE_PRIVATE), "so")
+        if (!libSoPath.exists()) {
+            libSoPath.mkdirs()
+        }
+        val dst = File(libSoPath, "libmain.so")
+        try {
+            FileUtil.copyFile(mainSoPath, dst)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        try {
+            val soHotFix = SoHotFix(this)
+            soHotFix.injectLoadPath(libSoPath.absolutePath)
+            // 手动先加载起来
+            // System.loadLibrary("unity1.so");
+            // System.loadLibrary("unity2.so");
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    fun loadSo(view: View?) {
+       //测试jar
     }
 }

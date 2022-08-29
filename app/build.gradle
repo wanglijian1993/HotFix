@@ -43,7 +43,25 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+
 }
+println "APP sub project config start---"
+afterEvaluate {
+    println "APP sub project afterEvaluate callback..."
+}
+
+task appTest {
+    println "APP sub project task config---"
+    doLast {
+        println "execution sub project task..."
+    }
+}
+println "APP sub project config end---"
+
+
+
+//gradle.addListener(TimingsListener())
 
 dependencies {
 
